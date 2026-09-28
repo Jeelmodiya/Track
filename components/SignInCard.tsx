@@ -19,7 +19,10 @@ import {
 import Link from "next/link";
 import { loginFormSchema } from "@/lib/validation";
 import { useLogin } from "@/features/auth/api/use-login";
-import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
+import {
+  signInWithGoogle,
+  signUpWithGithub,
+} from "@/lib/oauth";
 
 const SignInCard = () => {
   const { mutate, isPending } = useLogin();
@@ -93,7 +96,8 @@ const SignInCard = () => {
       </div>
       <div className="p-7 flex flex-col gap-y-4">
         <Button
-          onClick={() => signUpWithGoogle()}
+          type="button"
+          onClick={() => signInWithGoogle()}
           variant="secondary"
           size="lg"
           className="w-full"
@@ -103,6 +107,7 @@ const SignInCard = () => {
           Login with Google
         </Button>
         <Button
+          type="button"
           onClick={() => signUpWithGithub()}
           variant="secondary"
           size="lg"

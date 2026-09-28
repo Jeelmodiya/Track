@@ -5,30 +5,36 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { OAuthProvider } from "node-appwrite";
 
-export async function signUpWithGithub() {
+type AuthPage = "/sign-in" | "/sign-up";
+
+async function signUpWithProvider(
+  provider: OAuthProvider,
+  failurePage: AuthPage
+): Promise<never> {
   const { account } = await createAdminClient();
 
   const origin = headers().get("origin");
+  if (!origin) {
+    throw new Error("Unable to determine the request origin for OAuth.");
+  }
 
   const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Github,
+    provider,
     `${origin}/oauth`,
-    `${origin}/sign-up`
+    `${origin}${failurePage}`
   );
 
   return redirect(redirectUrl);
 }
 
+export async function signUpWithGithub(): Promise<never> {
+  return signUpWithProvider(OAuthProvider.Github, "/sign-up");
+}
+
 export async function signUpWithGoogle() {
-  const { account } = await createAdminClient();
+  return signUpWithProvider(OAuthProvider.Google, "/sign-up");
+}
 
-  const origin = headers().get("origin");
-
-  const redirectUrl = await account.createOAuth2Token(
-    OAuthProvider.Google,
-    `${origin}/oauth`,
-    `${origin}/sign-up`
-  );
-
-  return redirect(redirectUrl);
+export async function signInWithGoogle(): Promise<never> {
+  return signUpWithProvider(OAuthProvider.Google, "/sign-in");
 }

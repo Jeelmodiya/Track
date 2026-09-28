@@ -126,6 +126,7 @@ const SignUpCard = () => {
       </div>
       <div className="p-7 flex flex-col gap-y-4">
         <Button
+          type="button"
           onClick={() => signUpWithGoogle()}
           variant="secondary"
           size="lg"
@@ -136,6 +137,7 @@ const SignUpCard = () => {
           Login with Google
         </Button>
         <Button
+          type="button"
           onClick={() => signUpWithGithub()}
           variant="secondary"
           size="lg"
