@@ -47,8 +47,7 @@ async function signUpWithProvider(
       `${baseUrl}${failurePage}`
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("OAuth initiation failed:", message);
+    console.error("OAuth initiation failed:", error);
 
     return {
       success: false,

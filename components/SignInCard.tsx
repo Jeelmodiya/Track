@@ -40,9 +40,14 @@ const SignInCard = () => {
   }
 
   async function onGoogleSignIn() {
-    const result = await signInWithGoogle();
-    if (result && !result.success) {
-      toast.error(result.message);
+    try {
+      const result = await signInWithGoogle();
+      if (result && !result.success) {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Google sign-in action failed:", error);
+      toast.error("Unable to start sign-in. Please try again.");
     }
   }
 
