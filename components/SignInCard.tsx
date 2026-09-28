@@ -23,6 +23,7 @@ import {
   signInWithGoogle,
   signUpWithGithub,
 } from "@/lib/oauth";
+import { toast } from "sonner";
 
 const SignInCard = () => {
   const { mutate, isPending } = useLogin();
@@ -36,6 +37,13 @@ const SignInCard = () => {
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
     mutate({ json: values });
+  }
+
+  async function onGoogleSignIn() {
+    const result = await signInWithGoogle();
+    if (result && !result.success) {
+      toast.error(result.message);
+    }
   }
 
   return (
@@ -97,7 +105,7 @@ const SignInCard = () => {
       <div className="p-7 flex flex-col gap-y-4">
         <Button
           type="button"
-          onClick={() => signInWithGoogle()}
+          onClick={onGoogleSignIn}
           variant="secondary"
           size="lg"
           className="w-full"

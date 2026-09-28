@@ -26,6 +26,7 @@ import {
 import { registerSchema } from "@/lib/validation";
 import { useRegister } from "@/features/auth/api/use-register";
 import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
+import { toast } from "sonner";
 
 const SignUpCard = () => {
   const { mutate, isPending } = useRegister();
@@ -41,6 +42,14 @@ const SignUpCard = () => {
   function onSubmit(values: z.infer<typeof registerSchema>) {
     mutate({ json: values });
   }
+
+  async function onGoogleSignUp() {
+    const result = await signUpWithGoogle();
+    if (result && !result.success) {
+      toast.error(result.message);
+    }
+  }
+
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
       <CardHeader className="flex items-center justify-center text-center p-7">
@@ -127,7 +136,7 @@ const SignUpCard = () => {
       <div className="p-7 flex flex-col gap-y-4">
         <Button
           type="button"
-          onClick={() => signUpWithGoogle()}
+          onClick={onGoogleSignUp}
           variant="secondary"
           size="lg"
           className="w-full"
